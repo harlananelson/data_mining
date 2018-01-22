@@ -1,0 +1,46 @@
+---
+title: "HR Analytics"
+runtime: shiny
+output: html_notebook
+---
+```{r,include=FALSE}
+source("library.R")
+```
+
+```{r,include=FALSE}
+getwd()
+d <- read_csv(file.path("data","HR_comma_sep.csv"))
+```
+
+```{r}
+head(d)
+```
+
+
+```{r}
+sapply(d,"class")
+```
+```{r}
+input <- list()
+input$var <- "satisfaction_level"
+  d %>% ggplot() +
+    aes(x=satisfaction_level) +
+    geom_density()  
+```
+
+```{r}
+d %>% skim 
+```
+
+```{r}
+input$var_x <- 'average_montly_hours'
+input$var_y <- 'time_spend_company'
+d %>% ggplot(aes_string(x=input$var_x,y=input$var_y)) +
+  geom_point() 
+```
+
+
+
+
+
+
