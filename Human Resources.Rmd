@@ -44,6 +44,7 @@ These pages on the web provide examples of methods used in this analysis.
 [Plotting logistic regression][plotting logistic regression]
 [Interactive Documents][Interactive Documents]
 [Interactive Web Apps with Shiny Cheat Sheet][shiny cheat]
+[This github repository][data_mining]
 
 
 
@@ -63,5 +64,6 @@ These pages on the web provide examples of methods used in this analysis.
 [plotting logistic regression]: https://blogs.uoregon.edu/rclub/2016/04/05/plotting-your-logistic-regression-models/
 [Interactive Documents]: http://rmarkdown.rstudio.com/authoring_shiny.html
 [shiny cheat]: http://shiny.rstudio.com/images/shiny-cheatsheet.pdf
+[data_ming]: git@github.com:harlananelson/data_mining.git
 
 
