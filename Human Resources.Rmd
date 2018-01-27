@@ -1,11 +1,19 @@
 ---
 title: "Human Resources"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
+
+```{r,include=FALSE}
+# Load my libraries
+source('library.R')
+```
 
 # Summary
 
 This is an analysis of the *Human Resources Analytics* dataset on Kaggle.
+The goal is analyze employee attrition or churn or employee turn over.  
 
 ## File descriptions
 
@@ -27,25 +35,173 @@ This is an analysis of the *Human Resources Analytics* dataset on Kaggle.
 *    salary
 *    left: whether the employee has left (0, 1)
 
+# Data Description
+
+Read the data.
+```{r}
+d <- read_csv(file.path('data','HR_comma_sep.csv'))
+```
+
+Look a the first few lines.
+```{r}
+head(d)
+```
+
+Plots and tables of the data.
+Look for a pattern to explain why people leave.  
+
+```{r}
+d %>% ggplot(x=aes(as.character(number_project),y=satisfaction_level,color=as.character(left))) + 
+  geom_boxplot(aes(as.character(number_project),y=satisfaction_level,color=as.character(left)))
+```
+
+
+## Fit a model
+Use glm and the binomial family to model the probability of a person leaving.
+
+```{r}
+model_1 <- glm(left ~ number_project, data=d, family = 'binomial')
+```
+
+```{r}
+model_1 %>% broom::glance()
+```
+```{r}
+model_1 %>% broom::tidy()
+```
+```{r}
+model_2 <- glm(left ~ ., data=d, family = 'binomial')
+```
+
+```{r}
+model_2 %>% broom::tidy()
+```
+
+```{r}
+library(dbplyr)
+```
+
+```{r}
+d %>% ggplot() +
+  geom_boxplot(aes(x=satisfaction_level,y=left,group=left) )
+```
+
+
+
+```{r}
+d_3 <- d %>% dplyr::select(left,satisfaction_level,last_evaluation,number_project,average_montly_hours,time_spend_company,Work_accident,promotion_last_5years)  
+```
+
+```{r}
+summary(d_3)
+```
+
+
+```{r}
+model_3 <- glm(left ~ ., data=d_3, family = 'binomial')
+```
+
+```{r}
+names(model_3)
+```
+
+
+```{r}
+model_3 %>% broom::tidy()
+```
+```{r}
+d_3 <- model_3 %>% broom::augment(type.predict='response')
+```
+```{r}
+d_3 <- d_3 %>% mutate( left_p = .fitted > .5)
+```
+
+```{r}
+d_3 %>% group_by(left) %>% summarise(n())
+```
+
+
+```{r}
+d_3 %>% group_by(left_p) %>% summarise(n())
+
+```
+```{r}
+d_3 %>% group_by(left_p,left) %>% summarise(n())
+```
+
+
+
+
+
+```{r}
+d_3 %>% ggplot(aes(.fitted)) + geom_density()
+```
+
+
+
+```{r}
+d2 <- model_3 %>% broom::augment(type='response') 
+```
+
+```{r}
+names(d2)
+```
+
+
+```{r}
+d2 %>%  mutate(left_predicted = exp(.fitted))
+```
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+```
+
+
+## Extract model results
+Use package broom to extract the results.  
+
+## Interpret the results
+The model will predict the probability of a person leaving.
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
 # R Resources on the Web
 
 These pages on the web provide examples of methods used in this analysis.
 
-[Kaggle Human Resources Analytics][Human Resources Analytics]
-[Interactive Documents][Interactive Documents]
-[Data Visualization with ggplot2][ggplot2 cheat]
-[R Markdown][R Markdown]
-[modelr on githum][modelr gh]
-[tidyr on github][tidyr gh]
-[tidyr][tidyr]
-[Data Wrangling in R: tidyr][Data Wrangling]
-[broom intro][broom intro]
-[broom vignette][broom vignette]
-[Plotting logistic regression][plotting logistic regression]
-[Interactive Documents][Interactive Documents]
-[Interactive Web Apps with Shiny Cheat Sheet][shiny cheat]
-[This github repository][data_mining]
-
+* [Kaggle Human Resources Analytics][Human Resources Analytics]
+* [Interactive Documents][Interactive Documents]
+* [Data Visualization with ggplot2][ggplot2 cheat]
+* [R Markdown][R Markdown]
+* [modelr on githum][modelr gh]
+* [tidyr on github][tidyr gh]
+* [tidyr][tidyr]
+* [Data Wrangling in R: tidyr][Data Wrangling]
+* [broom intro][broom intro]
+* [broom vignette][broom vignette]
+* [Plotting logistic regression][plotting logistic regression]
+* [Interactive Documents][Interactive Documents]
+* [Interactive Web Apps with Shiny Cheat Sheet][shiny cheat]
+* [This github repository][data_mining]
 
 
 
@@ -56,7 +212,7 @@ These pages on the web provide examples of methods used in this analysis.
 [tidyr]: http://tidyr.tidyverse.org/reference/expand.html
 [modelr gh]: https://github.com/tidyverse/modelr/blob/master/R/predictions.R
 [ggplot2 cheat]: https://www.rstudio.com/wp-content/uploads/2016/11/ggplot2-cheatsheet-2.1.pdf
-[R Markdown][http://rmarkdown.rstudio.com/authoring_basics.html]
+[R Markdown]: http://rmarkdown.rstudio.com/authoring_basics.html]
 [Interactive Documents]: http://rmarkdown.rstudio.com/authoring_shiny.html
 [Data Wrangling]: http://clayford.github.io/dwir/dwr_11_tidyr.html
 [broom intro]: http://varianceexplained.org/r/broom-intro/
@@ -64,6 +220,6 @@ These pages on the web provide examples of methods used in this analysis.
 [plotting logistic regression]: https://blogs.uoregon.edu/rclub/2016/04/05/plotting-your-logistic-regression-models/
 [Interactive Documents]: http://rmarkdown.rstudio.com/authoring_shiny.html
 [shiny cheat]: http://shiny.rstudio.com/images/shiny-cheatsheet.pdf
-[data_ming]: git@github.com:harlananelson/data_mining.git
+[data_mining]: git@github.com:harlananelson/data_mining.git
 
 

@@ -1,2 +1,5 @@
+install.packages('devtools')
 install.packages('skimr')
 install.packages('DT')
+install.packages('tidyverse')
+install.packages('psych')
