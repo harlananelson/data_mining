@@ -4,18 +4,18 @@ runtime: shiny
 output: html_notebook
 ---
 
-```{r,include=FALSE}
+```{r,include=FALSE,cache=TRUE}
 source("library.R")
 ```
 
-```{r,include=FALSE}
-getwd()
+```{r,include=FALSE,cache=TRUE}
 d <- read_csv(file.path("data","HR_comma_sep.csv"))
 ```
 
-```{r}
-head(d)
+```{r,warning=FALSE}
+DT::renderDataTable(d,width=6)
 ```
+
 ```{r}
 inputPanel(
   selectInput("var_x", label = "Plot X variable:",
@@ -39,8 +39,8 @@ renderPlot({
 ```{r}
 renderPlot({
   d %>% ggplot() +
-    aes_string(x=as.double(input$var)) +
-    geom_histogram()
+    aes_string(x=input$var_x,fill="as.character(left)") +
+    geom_density()
 })
 ```
 

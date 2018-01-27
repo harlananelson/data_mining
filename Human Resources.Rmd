@@ -1,0 +1,67 @@
+---
+title: "Human Resources"
+output: html_notebook
+---
+
+# Summary
+
+This is an analysis of the *Human Resources Analytics* dataset on Kaggle.
+
+## File descriptions
+
+*    HR_train.csv - the training set
+*    HR_test.csv - the test set
+*    HR_sample_submission.csv - a sample submission file in the correct format
+
+## Data fields
+
+*    empID: employee ID
+*    satisfaction_level
+*    last_evaluation
+*    number_project
+*    average_montly_hours
+*    time_spend_company: time spent at the company
+*    Work_accident: whether they have had a work accident (0, 1)
+*    promotion_last_5years: whether they have had a promotion in the last 5 years (0, 1)
+*    department
+*    salary
+*    left: whether the employee has left (0, 1)
+
+# R Resources on the Web
+
+These pages on the web provide examples of methods used in this analysis.
+
+[Kaggle Human Resources Analytics][Human Resources Analytics]
+[Interactive Documents][Interactive Documents]
+[Data Visualization with ggplot2][ggplot2 cheat]
+[R Markdown][R Markdown]
+[modelr on githum][modelr gh]
+[tidyr on github][tidyr gh]
+[tidyr][tidyr]
+[Data Wrangling in R: tidyr][Data Wrangling]
+[broom intro][broom intro]
+[broom vignette][broom vignette]
+[Plotting logistic regression][plotting logistic regression]
+[Interactive Documents][Interactive Documents]
+[Interactive Web Apps with Shiny Cheat Sheet][shiny cheat]
+
+
+
+
+# References
+
+[Human Resources Analytics]: https://www.kaggle.com/c/sm/data 
+[tidyr gh]: https://github.com/tidyverse/tidyr/blob/master/man/expand.Rd
+[tidyr]: http://tidyr.tidyverse.org/reference/expand.html
+[modelr gh]: https://github.com/tidyverse/modelr/blob/master/R/predictions.R
+[ggplot2 cheat]: https://www.rstudio.com/wp-content/uploads/2016/11/ggplot2-cheatsheet-2.1.pdf
+[R Markdown][http://rmarkdown.rstudio.com/authoring_basics.html]
+[Interactive Documents]: http://rmarkdown.rstudio.com/authoring_shiny.html
+[Data Wrangling]: http://clayford.github.io/dwir/dwr_11_tidyr.html
+[broom intro]: http://varianceexplained.org/r/broom-intro/
+[broom vignette]: https://cran.r-project.org/web/packages/broom/vignettes/broom.html
+[plotting logistic regression]: https://blogs.uoregon.edu/rclub/2016/04/05/plotting-your-logistic-regression-models/
+[Interactive Documents]: http://rmarkdown.rstudio.com/authoring_shiny.html
+[shiny cheat]: http://shiny.rstudio.com/images/shiny-cheatsheet.pdf
+
+

@@ -3,30 +3,35 @@ title: "HR Analytics"
 runtime: shiny
 output: html_notebook
 ---
-```{r,include=FALSE}
+```{r,include=FALSE,cache=TRUE}
 source("library.R")
 ```
 
-```{r,include=FALSE}
-getwd()
+```{r,include=FALSE,cache=TRUE}
 d <- read_csv(file.path("data","HR_comma_sep.csv"))
 ```
 
+```{r,warning=FALSE}
+DT::renderDataTable(d,width=6)
+```
+
+```{r,echo=FALSE}
+renderPrint(sapply(d,"class"))
+```
+
 ```{r}
-head(d)
+selectInput("var_x","X axis:",choices = names(d),selected = "satisfaction_level")
 ```
 
 
+
 ```{r}
-sapply(d,"class")
+renderPlot({ 
+  d %>% ggplot(aes_string(x=input$var_x,fill="as.character(left)")) + 
+    geom_density(alpha=0.4)  
+  }) 
 ```
-```{r}
-input <- list()
-input$var <- "satisfaction_level"
-  d %>% ggplot() +
-    aes(x=satisfaction_level) +
-    geom_density()  
-```
+
 
 ```{r}
 d %>% skim 
