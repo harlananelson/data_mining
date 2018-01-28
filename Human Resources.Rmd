@@ -5,6 +5,7 @@ output:
     df_print: paged
 ---
 
+Keep a list of packages used in the R script called `library`.
 ```{r,include=FALSE}
 # Load my libraries
 source('library.R')
@@ -37,7 +38,7 @@ The goal is analyze employee attrition or churn or employee turn over.
 
 # Data Description
 
-Read the data.
+Read the data.  Note: the data must be in a `data` sub directory of your project directory
 ```{r}
 d <- read_csv(file.path('data','HR_comma_sep.csv'))
 ```
@@ -46,13 +47,25 @@ Look a the first few lines.
 ```{r}
 head(d)
 ```
+Add a field called left call left_f that is left converted to factors with labels yes and no.
+```{r}
+d <- d %>% mutate(left_f = factor(left,levels=c(0,1),labels=c('No','Yes')))
+```
+
 
 Plots and tables of the data.
 Look for a pattern to explain why people leave.  
 
+In this plot, we see that 
 ```{r}
-d %>% ggplot(x=aes(as.character(number_project),y=satisfaction_level,color=as.character(left))) + 
-  geom_boxplot(aes(as.character(number_project),y=satisfaction_level,color=as.character(left)))
+d %>% ggplot() + 
+  geom_boxplot(aes(as.character(number_project),y=satisfaction_level,color=left_f)) + 
+  ggplot2::ggtitle("Satisfation as a function of the number of projects",subtitle = "Human Resources Data") +
+  xlab("Number of Projects") +
+  ylab("Satistfaction Level") +
+  scale_color_discrete(name="Left Company")
+  
+
 ```
 
 
