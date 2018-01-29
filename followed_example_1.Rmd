@@ -1,0 +1,100 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+source('library.R')
+```
+
+
+```{r}
+set.seed(24601) # setting this so the random results will be repeatable 
+
+covmat <- matrix(c(1.0,   0.2,   0.6, 
+                   0.2,   1.0,  -0.5, 
+                   0.6,  -0.5,   1.0), nrow=3) # the true cov matrix for my data
+data <- MASS::mvrnorm(300, mu=c(0,0,0), Sigma=covmat) # generate random data that match that cov matrix
+colnames(data) <- c("X1", "X2", "DV")
+data <- as.data.frame(data)
+data$group <- gl(n=3, k=ceiling(nrow(data)/3), labels=c("a", "b", "c", "d"))
+# add some group differences and interaction stuff...
+data$DV <- with(data, ifelse(group=="c" & X1 > 0, DV+rnorm(n=1, mean=1), 
+                             ifelse(group=="b" & X1 > 0, DV+rnorm(n=1, mean=2) , DV)))
+# make DV binary
+data$DV <- ifelse(data$DV > 0, 1, 0)
+head(data)
+```
+```{r}
+contrasts(data$group)
+```
+```{r}
+model <- glm(DV ~ (X1 + X2 + group)^2, 
+             data=data, na.action="na.exclude",  family="binomial") 
+```
+
+```{r}
+head(augment(model))
+```
+
+```{r}
+summary(model)
+```
+```{r}
+model %>% tidy
+```
+```{r}
+model %>%  glance
+```
+```{r}
+data %>% tidyr::expand(X1=seq_range(X1,100))
+```
+
+```{r}
+
+data %>% tidyr::expand(X1=pretty(X1,100))
+```
+
+```{r}
+contrasts(data$group)
+```
+
+```{r}
+names(data)
+data %>% modelr::model_matrix(~group)
+```
+```{r}
+model <- glm(DV ~ (X1 + X2 + group)^2, family = "binomial", data=data, na.action = "na.exclude")
+```
+
+```{r}
+summary(model)
+```
+```{r}
+model %>% tidy
+```
+```{r}
+model %>% glimpse()
+```
+```{r}
+model %>%  glance
+```
+```{r}
+model %>% augment()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

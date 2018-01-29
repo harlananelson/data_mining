@@ -1,0 +1,41 @@
+---
+title: "Tables"
+output: html_notebook
+---
+
+# Create two way tables of categorical variables.
+
+First, get a list of the fields
+```{r}
+sapply(d,"class")
+```
+Create a tabulation
+```{r}
+tab <- d %$% table(left_f,number_project)
+print(t)
+```
+Calculate a chisquared measure of association.
+You can see that of  the people who left, 43.9% has only two projects and most of the people who
+stayed had 3 or 4 projects.
+```{r}
+d %$% CrossTable(left_f,number_project,chisq=TRUE,prop.r=TRUE,prop.c = FALSE,expected=FALSE)
+```
+Create some plots of the table. 
+The bars are above zero if there are more observations than expected and below zero if there or less
+```{r}
+assoc(t)
+```
+
+```{r}
+mosaic(t)
+```
+
+```{r}
+plot(ca(t))
+```
+
+
+
+
+
+
