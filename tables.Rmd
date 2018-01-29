@@ -1,7 +1,22 @@
 ---
 title: "Tables"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
+Keep a list of packages used in the R script called `library`.
+```{r,include=FALSE}
+# Load my libraries
+source('library.R')
+```
+Read the data.  Note: the data must be in a `data` sub directory of your project directory
+```{r}
+d <- read_csv(file.path('data','HR_comma_sep.csv'))
+```
+```{r}
+d <- d %>% mutate(left_f = factor(left,levels=c(0,1),labels=c('No','Yes')))
+```
+
 
 # Create two way tables of categorical variables.
 
@@ -12,7 +27,7 @@ sapply(d,"class")
 Create a tabulation
 ```{r}
 tab <- d %$% table(left_f,number_project)
-print(t)
+print(tab)
 ```
 Calculate a chisquared measure of association.
 You can see that of  the people who left, 43.9% has only two projects and most of the people who
@@ -23,15 +38,15 @@ d %$% CrossTable(left_f,number_project,chisq=TRUE,prop.r=TRUE,prop.c = FALSE,exp
 Create some plots of the table. 
 The bars are above zero if there are more observations than expected and below zero if there or less
 ```{r}
-assoc(t)
+assoc(tab)
 ```
 
 ```{r}
-mosaic(t)
+mosaic(tab)
 ```
 
 ```{r}
-plot(ca(t))
+plot(tab)
 ```
 
 
